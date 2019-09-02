@@ -1,0 +1,19 @@
+###
+### Git credentials
+###
+
+GIT_AUTHOR_NAME="Franzwagner Ternus"
+GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+git config --global user.name "$GIT_AUTHOR_NAME"
+GIT_AUTHOR_EMAIL="franzwagner.str@gmail.com"
+GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+git config --global user.email "$GIT_AUTHOR_EMAIL"
+GH_USER="strund3r"
+git config --global github.user "$GH_USER"
+
+###
+### Gmail credentials for mutt
+###
+export GMAIL=franzwagner.str@gmail.com
+export GMAIL_NAME="Franzwagner Ternus"
+export GMAIL_FROM=franzwagner.str@gmail.com

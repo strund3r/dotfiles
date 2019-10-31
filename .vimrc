@@ -118,7 +118,7 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 " Open NERDTree
-map <C-n> :NERDTreeToggle<CR>
+map <F6> :NERDTreeToggle<CR>
 
 " ----------------------------------------- "
 "                  Plugins                  "

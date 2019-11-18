@@ -1,17 +1,23 @@
+" .vimrc
+" Author: Franzwagner Ternus <franzwagner.str@gmail.com>
+" Source: https://github.com/strund3r/dotfiles
+
 " ----------------------------------------- "
 "             General  Settings             "
 " ----------------------------------------- "
 syntax enable	" enable syntax processing
 set number	" Show line numbers
 set showcmd	" show command in bottom bar
+set noshowcmd " Display incomplete commands.
 set cursorline	" highlight current line
 set linebreak	" Break lines at word (requires Wrap lines)
 set showbreak=+++ 	" Wrap-broken line prefix
 set textwidth=100	" Line wrap (number of cols)
 set showmatch	" Highlight matching brace
-" set spell	" Enable spell-checking
+set spell	" Enable spell-checking
+set spelllang=en_us
 set errorbells	" Beep or flash screen on errors
-set visualbell	" Use visual bell (no beeping)
+"set visualbell	" Use visual bell (no beeping)
 set title	" Set the window’s title, reflecting the file currently being edited.
 set encoding=utf-8
 
@@ -26,6 +32,10 @@ set smartindent	" Enable smart-indent
 set smarttab	" Enable smart-tabs
 set tabstop=4	" number of visual spaces per TAB
 set softtabstop=4	" number of spaces in tab when editing
+
+set showmode " Display the mode you're in.
+set wildmode=list:longest " Complete files like a shell.
+set nowrap " Turn off line wrapping.
 
 " Advanced
 set ruler	" Show row and column ruler information
@@ -75,10 +85,22 @@ au BufNewFile,BufRead *.go setlocal noet ts=4 sw=4 sts=4
 " autocmd BufEnter *.go colorscheme nofrils-dark
 
 " Markdown Settings
-autocmd BufNewFile,BufReadPost *.md setl ts=4 sw=4 sts=4 expandtab
+autocmd BufRead,BufNewFile *.md,*.markdown set filetype=ghmarkdown
 
 " Dockerfile settings
-autocmd FileType dockerfile set noexpandtab
+autocmd BufRead,BufNewFile Dockerfile* set filetype=dockerfile
+autocmd BufRead,BufNewFile Rockerfile* set filetype=dockerfile
+
+" Terraform settings
+autocmd FileType terraform set shiftwidth=2
+autocmd FileType terraform set tabstop=2
+autocmd FileType terraform set expandtab
+
+" Puppet settings
+autocmd BufRead,BufNewFile *.pp set filetype=puppet
+autocmd BufRead,BufNewFile Puppetfile set filetype=ruby
+autocmd FileType puppet set shiftwidth=2
+autocmd FileType puppet set tabstop=2
 
 " shell/config/systemd settings
 autocmd FileType fstab,systemd set noexpandtab
@@ -111,6 +133,12 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 "                  Mappings                  "
 " ------------------------------------------ "
 
+" Tabs
+nnoremap <space>t :tabnew<cr>
+nnoremap <space>e :tabedit
+nnoremap <space>n :tabnext<cr>
+nnoremap <space>p :tabprevious<cr>
+
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 
@@ -119,6 +147,25 @@ nmap ga <Plug>(EasyAlign)
 
 " Open NERDTree
 map <F6> :NERDTreeToggle<CR>
+
+" Fugitive
+nnoremap <space>gd :Gdiff<cr>
+nnoremap <space>gs :Gstatus<cr>
+nnoremap <space>gw :Gwrite<cr>
+nnoremap <space>ga :Gadd<cr>
+nnoremap <space>gb :Gblame<cr>
+nnoremap <space>gci :Gcommit<cr>
+nnoremap <space>ge :Gedit<cr>
+nnoremap <space>gm :Gmove
+nnoremap <space>gr :Gread<cr>
+nnoremap <space>grm :Gremove<cr>
+nnoremap <space>gp :Git push
+
+" Airline
+let g:airline_powerline_fonts = 1
+
+" Terraform
+let g:terraform_fmt_on_save = 1
 
 " ----------------------------------------- "
 "                  Plugins                  "
@@ -154,6 +201,30 @@ Plug 'vim-airline/vim-airline'
 
 " autocomplete
 Plug 'valloric/youcompleteme'
+
+" Indent Guide
+Plug 'nathanaelkane/vim-indent-guides'
+
+" Start Screen
+Plug 'mhinz/vim-startify'
+
+" Puppet
+Plug 'rodjek/vim-puppet'
+
+" Terraform
+Plug 'hashivim/vim-terraform'
+
+" Packer
+Plug 'hashivim/vim-packer'
+
+" Consul
+Plug 'hashivim/vim-consul'
+
+" Vault
+Plug 'hashivim/vim-vaultproject
+
+" Docker
+Plug 'ekalinin/Dockerfile.vim'
 
 " Initialize plugin system
 call plug#end()

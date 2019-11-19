@@ -221,7 +221,7 @@ Plug 'hashivim/vim-packer'
 Plug 'hashivim/vim-consul'
 
 " Vault
-Plug 'hashivim/vim-vaultproject
+Plug 'hashivim/vim-vaultproject'
 
 " Docker
 Plug 'ekalinin/Dockerfile.vim'

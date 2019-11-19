@@ -16,6 +16,8 @@ dotfiles: ## Installs the dotfiles.
 	ln -sfn $(CURDIR)/.gnupg/gpg.conf $(HOME)/.gnupg/gpg.conf;
 	ln -sfn $(CURDIR)/.gnupg/gpg-agent.conf $(HOME)/.gnupg/gpg-agent.conf;
 	git update-index --skip-worktree $(CURDIR)/.gitconfig;
+	~/.vim/plugged/youcompleteme/install.py --all
+	~/.vim/plugged/youcompleteme/install.py --clangd-completer
 
 .PHONY: test
 test: shellcheck ## Runs all the tests on the files in the repository.

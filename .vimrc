@@ -14,7 +14,7 @@ set linebreak	" Break lines at word (requires Wrap lines)
 set showbreak=+++ 	" Wrap-broken line prefix
 set textwidth=100	" Line wrap (number of cols)
 set showmatch	" Highlight matching brace
-set spell	" Enable spell-checking
+"set spell	" Enable spell-checking
 set spelllang=en_us
 set errorbells	" Beep or flash screen on errors
 "set visualbell	" Use visual bell (no beeping)
@@ -184,6 +184,9 @@ call plug#begin('~/.vim/plugged')
 " easy-align
 Plug 'junegunn/vim-easy-align'
 
+" Dash (Docs)
+Plug 'rizzatti/dash.vim'
+
 " fugitive.vim
 Plug 'tpope/vim-fugitive'
 
@@ -200,13 +203,13 @@ Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 
 " autocomplete
-Plug 'valloric/youcompleteme'
+"Plug 'valloric/youcompleteme'
 
 " Indent Guide
 Plug 'nathanaelkane/vim-indent-guides'
 
 " Start Screen
-Plug 'mhinz/vim-startify'
+"Plug 'mhinz/vim-startify'
 
 " Puppet
 Plug 'rodjek/vim-puppet'

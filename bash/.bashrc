@@ -10,6 +10,9 @@ shopt -s histappend
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# FIX: OSX crash complaining of operation `in progress in another thread when fork() was called`
+OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
 # Aliases
 alias cp='cp -rv'
 alias ls='ls --color=auto -ACF'

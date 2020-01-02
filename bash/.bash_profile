@@ -105,5 +105,7 @@ bind Space:magic-space
 ulimit -n 200000
 ulimit -u 2048
 
+# FIX: OSX crash complaining of operation `in progress in another thread when fork() was called`
+OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 prompt

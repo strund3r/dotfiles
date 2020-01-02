@@ -8,7 +8,7 @@ export ZSH="/Users/franzwagner/.oh-my-zsh"
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-POWERLEVEL9K_MODE='awesome-patched'
+POWERLEVEL9K_MODE='nerdfont-complete'
 ZSH_THEME="powerlevel9k/powerlevel9k"
 
 # Set list of themes to load
@@ -59,6 +59,24 @@ HIST_STAMPS="mm/dd/yyyy"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+source ~/.zplug/init.zsh
+
+# CODE::STATS
+CODESTATS_API_KEY="SFMyNTY.YzNSeWRXNWtNM0k9IyNOams0TkE9PQ.gVoX5c-KlIpsVx4BmCfKQffVOqfLJiU1pHAGkryhZVE"
+
+zplug "code-stats/code-stats-zsh", from:gitlab, use:"codestats.plugin.zsh"
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load --verbose
+
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
@@ -80,10 +98,6 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
-# CODE::STATS
-CODESTATS_API_KEY="SFMyNTY.YzNSeWRXNWtNM0k9IyNOams0TkE9PQ.gVoX5c-KlIpsVx4BmCfKQffVOqfLJiU1pHAGkryhZVE"
-zplug "code-stats/code-stats-zsh", from:gitlab, use:"codestats.plugin.zsh"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 

@@ -14,13 +14,13 @@ shopt -s checkwinsize
 OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # Aliases
-alias cp='cp -rv'
+alias cp='cp --recursive --verbose'
 alias ls='ls --color=auto -ACF'
 alias ll='ls --color=auto -alF'
 alias grep='grep --color=auto'
-alias mkdir='mkdir -pv'
-alias mv='mv -v'
-alias wget='wget -c'
+alias mkdir='mkdir --parents --verbose'
+alias mv='mv --verbose'
+alias wget='wget --continue'
 
 alias gadd='git add'
 alias gcom='git commit'
@@ -128,3 +128,8 @@ normalC="${txtrst}"
 if [ "${UID}" -eq "0" ]; then
     pointerC="${txtred}"
 fi
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+complete -C /usr/local/bin/terraform terraform

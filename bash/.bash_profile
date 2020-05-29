@@ -109,3 +109,5 @@ ulimit -u 2048
 OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 prompt
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

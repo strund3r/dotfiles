@@ -8,16 +8,15 @@ dotfiles: ## Installs the dotfiles.
 		f=$$(basename $$file); \
 		ln -sfn $$file $(HOME)/$$f; \
 	done; \
-	ln -snf "$(CURDIR)/.vimrc" "$(HOME)/.vimrc"
-	ln -snf "$(CURDIR)/bash/.bashrc" "$(HOME)/.bashrc"
-	ln -snf "$(CURDIR)/bash/.bash_profile" "$(HOME)/.bash_profile"
-	ln -snf "$(CURDIR)/zsh/.zshrc" "$(HOME)/.zshrc"
 	gpg --list-keys || true;
 	ln -sfn $(CURDIR)/.gnupg/gpg.conf $(HOME)/.gnupg/gpg.conf;
 	ln -sfn $(CURDIR)/.gnupg/gpg-agent.conf $(HOME)/.gnupg/gpg-agent.conf;
+	ln -snf "$(CURDIR)/.vimrc" "$(HOME)/.vimrc"
+	ln -snf "$(CURDIR)/bash/.bashrc" "$(HOME)/.bashrc"
+	ln -snf $(CURDIR)/.bash_profile $(HOME)/.profile;
+	ln -snf "$(CURDIR)/zsh/.zshrc" "$(HOME)/.zshrc"
 	git update-index --skip-worktree $(CURDIR)/.gitconfig;
-	~/.vim/plugged/youcompleteme/install.py --all
-	~/.vim/plugged/youcompleteme/install.py --clangd-completer
+	chmod +x installBrew.sh && ./installBrew.sh
 
 .PHONY: test
 test: shellcheck ## Runs all the tests on the files in the repository.

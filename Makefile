@@ -1,5 +1,5 @@
 .PHONY: all
-all: dotfiles  ## Installs the dotfiles.
+all: omz  ## Installs the dotfiles, brew and oh-my-zsh plugins.
 
 .PHONY: dotfiles
 dotfiles: ## Installs the dotfiles.
@@ -16,7 +16,17 @@ dotfiles: ## Installs the dotfiles.
 	ln -snf $(CURDIR)/.bash_profile $(HOME)/.profile;
 	ln -snf "$(CURDIR)/zsh/.zshrc" "$(HOME)/.zshrc"
 	git update-index --skip-worktree $(CURDIR)/.gitconfig;
-	chmod +x installBrew.sh && ./installBrew.sh
+
+.PHONY: brew
+brew: # Install Brew and installs apps with Brew
+	chmod +x $(CURDIR)/brew/installBrew.sh && $(CURDIR)/brew/installBrew.sh
+	brew bundle install --file $(CURDIR)/brew/Brewfile
+
+.PHONY: omz
+omz: # Installs oh-my-zsh plugins
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+	git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
+	git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 
 .PHONY: test
 test: shellcheck ## Runs all the tests on the files in the repository.

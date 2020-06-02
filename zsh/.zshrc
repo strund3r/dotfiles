@@ -65,6 +65,7 @@ source ~/.zplug/init.zsh
 CODESTATS_API_KEY="SFMyNTY.YzNSeWRXNWtNM0k9IyNOams0TkE9PQ.gVoX5c-KlIpsVx4BmCfKQffVOqfLJiU1pHAGkryhZVE"
 
 zplug "code-stats/code-stats-zsh", from:gitlab, use:"codestats.plugin.zsh"
+zplug "hlissner/zsh-autopair", defer:2
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
@@ -82,28 +83,37 @@ zplug load --verbose
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  yarn 
-  web-search 
-  jsontools
-  macports
-  node 
-  osx 
-  sudo
-  thor
-  docker
+    aws
+    docker
+    fd
+    git
+    jsontools
+    kubectl
+    macports
+    osx
+    python
+    sudo
+    torrent
+    web-search
+    zsh-autosuggestions
+    zsh-completions
+    zsh-syntax-highlighting
 )
 
+# Lad Gti completion
+zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+fpath=(~/.zsh $fpath)
+
 source $ZSH/oh-my-zsh.sh
+
+autoload -U compinit && compinit
 
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -137,7 +147,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 
 # Elements options of left prompt
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir_writable dir ssh aws docker_machine vcs)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir_writable dir ssh docker_machine vcs aws_prompt_info)
 # Elements options of right prompt
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time root_indicator background_jobs history battery time)
 
@@ -184,6 +194,9 @@ POWERLEVEL9K_FOLDER_ICON=''
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
 POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION=2
 
+# AWS
+POWERLEVEL9K_IP_INTERFACE=eth0
+
 # Truncate directory
 #POWERLEVEL9K_SHORTEN_STRATEGY=none
 #POWERLEVEL9K_SHORTEN_STRATEGY=truncate_middle
@@ -224,14 +237,14 @@ ulimit -n 200000
 ulimit -u 2048
 
 function cd {
-   builtin cd "$@" && colorls -A --report
+   builtin cd "$@" && colorls --all --sort-files --report
 }
 
 alias gsup="git status"
 alias gcom="git commit --gpg-sign --message"
 alias gadd="git add"
 
-alias ls="colorls"
+alias ls="colorls --sort-files"
 
 alias look="sudo find . -name"
 alias search="sudo grep --color -rnw ./ -e "

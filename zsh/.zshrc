@@ -393,6 +393,6 @@ source /home/franzwagner/.asdf/asdf.sh
 export SSH_ASKPASS='/usr/bin/ksshaskpass'
 export SSH_ASKPASS_REQUIRE=prefer
 
-export JIRA_API_TOKEN="$(cat ~/.jira-api-token)"
+# export JIRA_API_TOKEN="$(cat ~/.jira-api-token)"
 
 # eval $(thefuck --alias)

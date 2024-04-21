@@ -175,7 +175,7 @@ POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%f"
 
 # Visual customisation of the second prompt line
-# local user_symbol="$"
+# local user_symbmainol="$"
 # if [[ $(print -P "%#") =~ "#" ]]; then
 #     user_symbol = "#"
 # fi
@@ -393,6 +393,6 @@ source /home/franzwagner/.asdf/asdf.sh
 export SSH_ASKPASS='/usr/bin/ksshaskpass'
 export SSH_ASKPASS_REQUIRE=prefer
 
-export JIRA_API_TOKEN="ATATT3xFfGF0PZ5g3T59DijNYobXt_F7qE5mAYr1Ven-Uq3vg82tilxp6Q7F98eIUC04qmMGQwNAHEjBHvSFymr8qLMDCfUiIUVPLar1Aqg6-ru3nNk2XoEezOTx2oq3CehXYqD_2nJgpMclP4vqT3A9zp4yhgxNUNoMyvKn1dY1TtMBe6Ls_jM=D8FB5679"
+export JIRA_API_TOKEN="$(cat ~/.jira-api-token)"
 
 # eval $(thefuck --alias)

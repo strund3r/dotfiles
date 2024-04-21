@@ -1,5 +1,11 @@
 .PHONY: all
-all: omz  ## Installs the dotfiles, brew and oh-my-zsh plugins.
+all: fonts omz dotfiles colorls  ## Installs the dotfiles, brew and oh-my-zsh plugins.
+
+.PHONY: fonts
+fonts:
+	mkdir -p ~/.local/share/fonts
+	cd ~/.local/share/fonts && curl -fLO https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf && curl -fLO https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf  && curl -fLO https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf  && curl -fLO https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+	cd ~/.local/share/fonts && curl -fLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/FiraCode.zip && unzip FiraCode.zip && rm FiraCode.zip README.md LICENSE
 
 .PHONY: dotfiles
 dotfiles: ## Installs the dotfiles.
@@ -15,18 +21,29 @@ dotfiles: ## Installs the dotfiles.
 	ln -snf "$(CURDIR)/bash/.bashrc" "$(HOME)/.bashrc"
 	ln -snf $(CURDIR)/.bash_profile $(HOME)/.profile;
 	ln -snf "$(CURDIR)/zsh/.zshrc" "$(HOME)/.zshrc"
+	sudo ln -snf "$(CURDIR)/functions/alogin" "/usr/local/bin/alogin"
+	sudo ln -snf "$(CURDIR)/functions/klogin" "/usr/local/bin/klogin"
+	sudo ln -snf "$(CURDIR)/functions/k8s-pod-events" "/usr/local/bin/k8s-pod-events"
+	sudo ln -snf "$(CURDIR)/functions/k8s-decrypt-secret" "/usr/local/bin/k8s-decrypt-secret"
 	git update-index --skip-worktree $(CURDIR)/.gitconfig;
+	curl https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh | sh
 
 .PHONY: brew
 brew: # Install Brew and installs apps with Brew
 	chmod +x $(CURDIR)/brew/installBrew.sh && $(CURDIR)/brew/installBrew.sh
+	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 	brew bundle install --file $(CURDIR)/brew/Brewfile
 
 .PHONY: omz
 omz: # Installs oh-my-zsh plugins
+	sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 	git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
 	git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+.PHONY: colorls
+colorls:
+	gem install colorls
 
 .PHONY: test
 test: shellcheck ## Runs all the tests on the files in the repository.

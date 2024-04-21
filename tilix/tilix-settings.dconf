@@ -1,0 +1,37 @@
+[/]
+control-scroll-zoom=true
+copy-on-select=true
+prompt-on-close=true
+prompt-on-delete-profile=true
+quake-specific-monitor=0
+theme-variant='dark'
+warn-vte-config-issue=false
+window-style='normal'
+
+[profiles]
+list=['2b7c4080-0ddd-46c5-8f23-563fd3ba789d']
+
+[profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
+background-color='#263238'
+background-transparency-percent=10
+badge-color-set=false
+bold-color='#1414FFFF0000'
+bold-color-set=true
+bold-is-bright=false
+cursor-blink-mode='on'
+cursor-colors-set=false
+default-size-columns=155
+default-size-rows=30
+dim-transparency-percent=0
+draw-margin=80
+font='FiraCode Nerd Font weight=450 12'
+foreground-color='#F6F6F5F5F4F4'
+highlight-background-color='#C2C24F4F4F4F'
+highlight-colors-set=true
+highlight-foreground-color='#000000000000'
+notify-silence-enabled=true
+palette=['#54546E6E7A7A', '#FFFF51515151', '#5C5CF1F19E9E', '#FFFFD7D74040', '#4040C4C4FFFF', '#FFFF40408080', '#6363FCFCDADA', '#FFFFFFFFFFFF', '#B0B0BEBEC5C5', '#FFFF8A8A8080', '#B9B9F6F6CACA', '#FFFFE5E57F7F', '#8080D7D7FFFF', '#FFFF8080AAAA', '#A7A7FDFDEAEA', '#FFFFFFFFFFFF']
+terminal-bell='icon-sound'
+use-system-font=false
+use-theme-colors=false
+visible-name='Default'

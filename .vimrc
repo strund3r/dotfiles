@@ -181,6 +181,9 @@ endif
 " Directory for plugins
 call plug#begin('~/.vim/plugged')
 
+" GitHub Copilot
+Plug 'github/copilot.vim'
+
 " easy-align
 Plug 'junegunn/vim-easy-align'
 

@@ -327,9 +327,8 @@ alias dodhugo='dod && echo open http://localhost:1313 ; hugo server -w --baseURL
 alias gssstart="npm run start --prefix ~/mod-spotify-as-status > '/home/franzwagner/mod-spotify-as-status/log.txt' 2>&1 &"
 alias gssstop="kill \$(ps -aux | grep 'node dist/index.js' | awk 'NR==1 { print \$2 }')"
 
-########## Aliases ##########
 
-TF_VAR_environment=$(terraform workspace list | awk '{ printf "%s", $2 }')
+########## Aliases ##########
 
 ########## Kafka Info ##########
 

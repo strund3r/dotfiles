@@ -1,0 +1,91 @@
+#!/bin/env bash
+
+RED='\033[1;31m'
+GREEN='\033[1;32m'
+YELLOW='\033[1;93m'
+YELLOW_BACKGROUND='\e[1;30;43m' # Black text
+GREEN_BACKGROUND='\e[1;30;42m' # Black text
+RED_BACKGROUND='\e[1;30;41m' # Black text
+#BACKGROUND='\e[0;39;41m' # White text
+NC='\033[0m' # No Color
+
+help-klogin() {
+cat << EOF
+
+Usage:
+  klogin <environment>
+
+Options:
+  <environment>         environment name
+  -h                    show this help
+
+EOF
+}
+
+vpn-connect() {
+    echo -ne "\n${YELLOW_BACKGROUND}             Connecting to VPN...             ${NC}\n" >&2
+
+    if [ "$(nmcli con show --active | grep devops_vpn | wc -l)" == 1 ] ; then
+        echo -ne "${GREEN_BACKGROUND}        VPN connection already active!        ${NC}\n" >&2
+    else
+        if nmcli --colors yes --terse con up id franzwagner@stonebanking_devops_vpn --ask; then
+            echo -ne "${GREEN_BACKGROUND}          VPN connection successful!          ${NC}\n" >&2
+        else
+            echo -ne "${RED_BACKGROUND}            VPN connection failed!            ${NC}\n" >&2
+            exit 1
+        fi
+    fi
+}
+
+aws-login() {
+    ENVIRONMENT_UNDERSCORE=$(echo "$ENVIRONMENT" | tr '-' '_')
+    echo -ne "\n${YELLOW_BACKGROUND}             Logging in to EKS...             ${NC}\n" >&2
+    if stonectl aws login --role k8s_"$ENVIRONMENT_UNDERSCORE" "$ENVIRONMENT"; then
+        if stonectl aws eks "$ENVIRONMENT"; then
+            echo -ne "${GREEN_BACKGROUND}        Logged in to EKS successfully!        ${NC}\n\n" >&2
+        else
+            echo -ne "${RED_BACKGROUND}             Log in to EKS failed!            ${NC}\n\n" >&2
+            exit 1
+        fi
+    else
+        echo -ne "${RED_BACKGROUND}             Log in to EKS failed!            ${NC}\n\n" >&2
+        exit 1
+    fi
+}
+
+change-k8s-context() {
+    #echo -ne "\n${GREEN}Changing k8s context to k8s-$1...${NC}\n\n" >&2
+    echo -ne "\n${GREEN_BACKGROUND}" >&2
+    echo -n "      $(kubectl config use-context "k8s-$1")      " 2>&1
+    echo -ne "${NC}\n" >&2
+}
+
+klogin() {
+    if (( "$#" == 0 )); then
+        help-klogin
+        exit
+    fi
+
+    vpn-connect
+
+    while getopts ":h" opt; do
+        case $opt in
+        h)
+            help-klogin
+            exit
+            ;;
+        \?)
+            echo -ne "\n${RED_BACKGROUND}          Invalid option: -$OPTARG          ${NC}\n" >&2
+            exit
+            ;;
+        esac
+    done
+
+    change-k8s-context "$1"
+
+    for ENVIRONMENT in "$@"; do
+        aws-login "$ENVIRONMENT"
+    done
+}
+
+klogin "$@"

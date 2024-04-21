@@ -1,0 +1,62 @@
+help-k8s-events-pod() {
+cat << EOF
+
+Usage:
+  k8s-events-pod [options] <namespace> <pod-name>
+
+Options:
+  <namespace>           kubernetes namespace (optional)
+  <pod-name>            kubernetes pod name
+  -v                    verbose output (show kubectl command)
+  -h                    show this help
+
+EOF
+}
+
+k8s-events-pod() {
+    if (( "$#" == 0 )); then
+        help-k8s-events-pod
+    fi
+
+    while getopts ":vh" opt; do
+        case $opt in
+        v)
+            if (( "$#" == 1 ))
+            then
+                echo "usage error: pod name required" >&2
+            elif (( "$#" == 2 ))
+            then
+                echo ""
+                echo "kubectl get events --all-namespaces --field-selector involvedObject.name='$2' --sort-by='.metadata.creationTimestamp'"
+                echo ""
+                kubectl get events --all-namespaces --field-selector involvedObject.name="$2" --sort-by='.metadata.creationTimestamp' >&2
+            elif (( "$#" == 3 ))
+            then
+                echo ""
+                echo "kubectl get events --namespace $2 --field-selector involvedObject.name='$3' --sort-by='.metadata.creationTimestamp'"
+                echo ""
+                kubectl get events --namespace "$2" --field-selector involvedObject.name="$3" --sort-by='.metadata.creationTimestamp' >&2
+            fi
+            exit
+            ;;
+        h)
+            help-k8s-events-pod
+            exit
+            ;;
+        \?)
+            echo "invalid option: -$OPTARG" >&2
+            exit
+            ;;
+        esac
+    done
+
+    if (( "$#" == 1 ))
+    then
+        kubectl get events --all-namespaces --field-selector involvedObject.name="$1" --sort-by='.metadata.creationTimestamp' >&2
+    elif (( "$#" == 2 ))
+    then
+        kubectl get events --namespace "$1" --field-selector involvedObject.name="$2" --sort-by='.metadata.creationTimestamp' >&2
+    fi
+}
+
+k8s-events-pod "$@"

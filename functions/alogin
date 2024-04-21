@@ -1,0 +1,102 @@
+#!/bin/env bash
+
+RED='\033[1;31m'
+GREEN='\033[1;32m'
+YELLOW='\033[1;93m'
+YELLOW_BACKGROUND='\e[1;30;43m' # Black text
+GREEN_BACKGROUND='\e[1;30;42m' # Black text
+RED_BACKGROUND='\e[1;30;41m' # Black text
+#BACKGROUND='\e[0;39;41m' # White text
+NC='\033[0m' # No Color
+
+help-alogin() {
+cat << EOF
+
+Usage:
+  alogin [options] <environment>
+
+Options:
+  <environment>         environment name
+  -v                    vault <first environment> login
+  -h                    show this help
+
+EOF
+}
+
+vpn-connect() {
+    echo -ne "\n${YELLOW_BACKGROUND}             Connecting to VPN...             ${NC}\n" >&2
+
+    if [ "$(nmcli con show --active | grep devops_vpn | wc -l)" == 1 ] ; then
+        echo -ne "${GREEN_BACKGROUND}        VPN connection already active!        ${NC}\n" >&2
+    else
+        if nmcli --colors yes --terse con up id franzwagner@stonebanking_devops_vpn --ask; then
+            echo -ne "${GREEN_BACKGROUND}          VPN connection successful!          ${NC}\n" >&2
+        else
+            echo -ne "${RED_BACKGROUND}            VPN connection failed!            ${NC}\n" >&2
+            exit 1
+        fi
+    fi
+}
+
+vault-login() {
+    echo -ne "\n${YELLOW_BACKGROUND}        Logging in on Vault ${ENVIRONMENT}...         ${NC}\n" >&2
+    if vault token lookup --address=https://vault.${ENVIRONMENT}.stone.credit > /dev/null 2>&1; then
+        echo -ne "\n${GREEN_BACKGROUND}       Vault ${ENVIRONMENT} login already active!     ${NC}\n\n" >&2
+    else
+        # if vault login -no-print -method=oidc -address="https://vault.${ENVIRONMENT}.stone.credit/" role=azure; then
+        if stonectl vault login shared ${ENVIRONMENT} /dev/null 2>&1; then
+            echo -ne "${GREEN_BACKGROUND}        Vault ${ENVIRONMENT} login successful!        ${NC}\n\n" >&2
+        else
+            echo -ne "${RED_BACKGROUND}          Vault ${ENVIRONMENT} login failed!          ${NC}\n\n" >&2
+            exit 1
+        fi
+    fi
+}
+
+aws-login() {
+    echo -ne "\n${YELLOW_BACKGROUND}             Logging in to AWS...             ${NC}\n" >&2
+    if stonectl aws login --role adminsso "$@"; then
+        echo -ne "${GREEN_BACKGROUND}        Logged in to AWS successfully!        ${NC}\n\n" >&2
+    else
+        echo -ne "${RED_BACKGROUND}             Log in to AWS failed!            ${NC}\n\n" >&2
+        exit 1
+    fi
+}
+
+alogin() {
+    if (( "$#" == 0 )); then
+        help-alogin
+        exit
+    fi
+
+    vpn-connect
+
+    while getopts ":vh" opt; do
+        case $opt in
+        v)
+            if (( "$#" < 2 ))
+            then
+                echo -ne "\n${RED_BACKGROUND}          Missing environment name.          ${NC}\n"
+                exit 5
+            else
+                ENVIRONMENT=$2
+                vault-login
+                shift
+            fi
+            continue
+            ;;
+        h)
+            help-alogin
+            exit
+            ;;
+        \?)
+            echo -ne "${RED_BACKGROUND}          Invalid option: -$OPTARG          ${NC}\n" >&2
+            exit
+            ;;
+        esac
+    done
+
+    aws-login "$@"
+}
+
+alogin "$@"
